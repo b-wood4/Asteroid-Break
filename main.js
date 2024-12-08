@@ -2,6 +2,22 @@ $(document).ready(function () {
     const canvas = document.getElementById('gameCanvas')
     const ctx = canvas.getContext('2d')
     const ballRadius = 10
+    const boundingRect = document.getElementById('special').getBoundingClientRect()
+
+    const leftconsole = document.getElementById('left-console').getBoundingClientRect()
+    const rightconsole = document.getElementById('right-console').getBoundingClientRect()
+    const scoreText = document.getElementById('scoreText')
+    const livesText = document.getElementById('livesText')
+    canvas.width = boundingRect.width
+    canvas.height = boundingRect.height
+    canvas.style.top = (boundingRect.height / 2 + boundingRect.top) + 'px'
+    canvas.style.left = (boundingRect.width / 2 + boundingRect.left) + 'px'
+    scoreText.style.top = (leftconsole.top + leftconsole.height / 4.5) + 'px'
+    scoreText.style.left = (leftconsole.left + leftconsole.width / 4) + 'px'
+    livesText.style.top = (rightconsole.top + rightconsole.height / 4.5) + 'px'
+    livesText.style.left = (rightconsole.left + rightconsole.width / 3.5) + 'px'
+
+    document.getElementById('gameTitle').style.left = '55%'
 
     const paddleHeight = 10
     const paddleWidth = 75
@@ -17,17 +33,20 @@ $(document).ready(function () {
 
     let interval = 0
     let gameStart = false
+    let isFlipped = false
+    let lastFlipped = 0
+    let minFlipTime = 10000
 
     const brickRowCount = 3
     const brickColumnCount = 5
     const brickWidth = 75
     const brickHeight = 20
     const brickPadding = 10
-    const brickOffsetTop = 30
-    const brickOffsetLeft = 30
+    let brickOffsetTop = canvas.height / 10
+    const brickOffsetLeft = canvas.width / 2 - (brickColumnCount * (brickWidth + brickPadding)) / 2
 
     let score = 0
-    let lives = 3
+    let lives = 5
 
     let bricks = []
     for (let c = 0; c < brickColumnCount; c++) {
@@ -73,47 +92,57 @@ $(document).ready(function () {
     }
 
     function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        drawBall()
-        drawPaddle()
-        drawBricks()
-        collisionDetection()
-        drawScore()
-        drawLives()
-        x += distX
-        y += distY
+        if (!gameStart) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            drawPaddle()
+            drawBricks()
+            drawStart()
+        }
+        else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            drawBall()
+            drawPaddle()
+            drawBricks()
+            collisionDetection()
+            drawScore()
+            drawLives()
+            flipCalc()
+            x += distX
+            y += distY
 
-        if (rightPressed) {
-            if (paddleX < canvas.width - paddleWidth) {
-                paddleX += 7
+            if (rightPressed) {
+                if (paddleX < canvas.width - paddleWidth) {
+                    paddleX += 7
+                }
+            } else if (leftPressed) {
+                leftPressed = true
+                if (paddleX > 0) {
+                    paddleX -= 7
+                }
             }
-        } else if (leftPressed) {
-            leftPressed = true
-            if (paddleX > 0) {
-                paddleX -= 7
+            if (x + distX > canvas.width - ballRadius || x < ballRadius) {
+                distX = -distX
             }
-        }
-        if (x + distX > canvas.width - ballRadius || x < ballRadius) {
-            distX = -distX
-        }
-        if (y < ballRadius)
-            distY = -distY
-        else if (y + distY + 10 > canvas.height - ballRadius) {
-            if (x > paddleX && x < paddleX + paddleWidth)
+            if (y < ballRadius)
                 distY = -distY
-            else {
-                if (y + distY > canvas.height - ballRadius) {
-                    lives--
-                    if (!lives) {
-                        alert("CRASHED! GAME OVER")
-                        document.location.reload()
-                        clearInterval(interval)
-                    } else {
-                        x = canvas.width / 2
-                        y = canvas.height - 30
-                        distX = 5
-                        distY = -5
-                        paddleX = (canvas.width - paddleWidth) / 2
+            else if (y + distY + 10 > canvas.height - ballRadius) {
+                if (x > paddleX && x < paddleX + paddleWidth)
+                    distY = -distY
+                else {
+                    if (y + distY > canvas.height) {
+                        lives--
+                        if (!lives) {
+                            alert("CRASHED! GAME OVER")
+                            document.location.reload()
+                            clearInterval(interval)
+                        }
+                        else {
+                            x = canvas.width / 2
+                            y = canvas.height - 30
+                            distX = 5
+                            distY = -5
+                            paddleX = (canvas.width - paddleWidth) / 2
+                        }
                     }
                 }
             }
@@ -124,22 +153,26 @@ $(document).ready(function () {
     $(document).keydown(function (e) {
         if (e.keyCode == 39) {
             rightPressed = true
+            $('#right-button-up').hide()
         } else if (e.keyCode == 37) {
             leftPressed = true
+            $('#left-button-up').hide()
+        } else if (e.keyCode == 32) {
+            startGame()
         }
     })
     $(document).keyup(function (e) {
         if (e.keyCode == 39) {
             rightPressed = false
+            $('#right-button-up').show()
         } else if (e.keyCode == 37) {
             leftPressed = false
-        }
+            $('#left-button-up').show()
+        } 
     })
     function startGame() {
         if (!gameStart) {
             gameStart = true
-            $('#start').hide()
-            interval = setInterval(draw, 10)
         }
     }
     $('#start').on('click', startGame)
@@ -165,17 +198,52 @@ $(document).ready(function () {
 
         }
     }
-
-    //score
+ //score
     function drawScore() {
-        ctx.font = '16px Arial'
-        ctx.fillStyle = '#0095DD'
-        ctx.fillText('Score:' + score, 8, 20)
+        $('#scoreText').html("Score: <br>")
+        $('#scoreText').append(score)
     }
     //lives
     function drawLives() {
-        ctx.font = '16px Arial'
-        ctx.fillStyle = '#0095DD'
-        ctx.fillText('Lives:' + lives, canvas.width - 65, 20)
+        $('#livesText').html("Lives: <br>")
+        $('#livesText').append(lives)
     }
+    //draw press space to start
+    function drawStart() {
+        ctx.font = "38px Handjet"
+        ctx.fillStyle = "#0095DD"
+        ctx.fillText("Press Space to Start", canvas.width / 2-140, canvas.height / 2)
+    }
+
+    function flip() {
+        // $('#gameCanvas').css('transform-origin', '0 0')
+        if (!isFlipped) {
+            $('#gameCanvas').css('transform', 'rotate(180deg)')
+            canvas.style.top = (boundingRect.top) + 'px'
+            canvas.style.left = (boundingRect.left) + 'px'
+            isFlipped = true
+        } else {
+            $('#gameCanvas').css('transform', 'rotate(0deg)')
+            canvas.style.top = (boundingRect.top) + 'px'
+            canvas.style.left = (boundingRect.left) + 'px'
+            isFlipped = false
+        }
+    }
+    function flipCalc() {
+        let number = Math.floor(Math.random() * 1000)
+        if (number < 10 && performance.now() - lastFlipped > minFlipTime) {
+            shake()
+            lastFlipped = performance.now()
+            setTimeout(flip, 1100)
+        }
+
+    }
+    interval = setInterval(draw, 10)
+
+    function shake(){
+        $('#gameCanvas').effect('shake', { times: 8, distance: 10 }, 1000)
+    }
+    $(window).on('resize', function () {
+    document.location.reload()
+    })
 })

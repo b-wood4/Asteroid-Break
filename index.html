@@ -4,15 +4,106 @@
 <head>
     <title>Asteroid Breaker</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Jaro:opsz@6..72&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <button id="start">Start Game</button>
+    <div class="content-area">
+        <canvas id="gameCanvas"></canvas> 
+        <blockquote id="gameTitle">Asteroid Breaker</blockquote>
+        <blockquote id="scoreText"></blockquote>
+        <blockquote id="livesText"></blockquote>
+<!-- Generator: Adobe Adobe Illustrator 24.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080; z-index:0;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#395C72;stroke:#395C72;stroke-width:10;stroke-miterlimit:10;}
+	.st1{fill:#00FFFF;stroke:#00FFFF;stroke-width:10;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#00FFFF;stroke-width:10;stroke-miterlimit:10;}
+	.st3{fill:#90B1C3;stroke:#90B1C3;stroke-width:10;stroke-miterlimit:10;}
+	.st4{fill:#00013A;stroke:#00013A;stroke-width:10;stroke-miterlimit:10;}
+	.st5{fill:#FCFD92;stroke:#FCFD92;stroke-width:10;stroke-miterlimit:10;}
+	.st6{fill:#00013A;stroke:#00013A;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;}
+	.st7{fill:#8B8C50;stroke:#8B8C50;stroke-width:10;stroke-miterlimit:10;}
+	.st8{fill:#8B8C50;stroke:#8B8C50;stroke-width:10;stroke-linecap:round;stroke-miterlimit:10;}
+</style>
+<g id="Layer_6">
+	<polyline class="st0" points="238.63,-3.15 360,120 1560,120 1674.48,0 	"/>
+	<polygon class="st0" points="0,843.03 360,720 1560,720 1920,845 1920,1080 0,1080 	"/>
+</g>
+<g id="Layer_6_copy">
+	<polyline class="st0" points="238.63,-3.15 360,120 1560,120 1674.48,0 	"/>
+	<polygon class="st0" points="-120,885 360,720 1560,720 2040,885 2044,1140 -126,1140 	"/>
+</g>
+<g id="Layer_3">
+	<path id="_x3C_Path_x3E_" class="st1" d="M360,120L120-120L360,120z"/>
+	<path class="st1" d="M1560,120l240-240L1560,120z"/>
+	<line class="st1" x1="360" y1="720" x2="0" y2="841"/>
+	<line class="st1" x1="1560" y1="720" x2="1920" y2="840"/>
+	<rect id='special' x="360" y="120" class="st2" width="1200" height="600"/>
+</g>
+<g id="Layer_3_copy">
+	<path id="_x3C_Path_x3E__1_" class="st1" d="M360,120L120-120L360,120z"/>
+	<path class="st1" d="M1560,120l240-240L1560,120z"/>
+	<line class="st1" x1="360" y1="720" x2="-126" y2="883"/>
+	<line class="st1" x1="1560" y1="720" x2="2044" y2="882"/>
+	<rect x="360" y="120" class="st2" width="1200" height="600"/>
+</g>
+<g id="left-console">
+	<path class="st3" d="M420,1010.69V774.31c0-5.14,4.17-9.31,9.31-9.31h266.38c5.14,0,9.31,4.17,9.31,9.31v236.38
+		c0,5.14-4.17,9.31-9.31,9.31H429.31C424.17,1020,420,1015.83,420,1010.69z"/>
+	<path class="st4" d="M442.5,995.69V789.31c0-5.14,4.17-9.31,9.31-9.31h221.38c5.14,0,9.31,4.17,9.31,9.31v206.38
+		c0,5.14-4.17,9.31-9.31,9.31H451.81C446.67,1005,442.5,1000.83,442.5,995.69z"/>
+</g>
+<g id="right-console">
+	<path class="st3" d="M1230,1010.69V774.31c0-5.14,4.17-9.31,9.31-9.31h266.38c5.14,0,9.31,4.17,9.31,9.31v236.38
+		c0,5.14-4.17,9.31-9.31,9.31h-266.38C1234.17,1020,1230,1015.83,1230,1010.69z"/>
+	<path class="st4" d="M1252.5,995.69V789.31c0-5.14,4.17-9.31,9.31-9.31h221.38c5.14,0,9.31,4.17,9.31,9.31v206.38
+		c0,5.14-4.17,9.31-9.31,9.31h-221.38C1256.67,1005,1252.5,1000.83,1252.5,995.69z"/>
+</g>
+<g id="right-button-down">
+	<ellipse class="st5" cx="840" cy="937.5" rx="60" ry="22.5"/>
+	<line class="st6" x1="824.13" y1="925.51" x2="809.87" y2="936.49"/>
+	<line class="st6" x1="824.13" y1="925.51" x2="809.87" y2="936.49"/>
+	<line class="st6" x1="824.13" y1="948.49" x2="809.87" y2="936.49"/>
+	<line class="st6" x1="876.53" y1="937.11" x2="810" y2="936.89"/>
+</g>
+<g id="left-button-down">
+	<ellipse class="st5" cx="1080" cy="937.5" rx="60" ry="22.5"/>
+	<line class="st6" x1="1101.06" y1="948.49" x2="1115.33" y2="937.51"/>
+	<line class="st6" x1="1101.06" y1="925.51" x2="1115.2" y2="937.11"/>
+	<line class="st6" x1="1048.67" y1="936.89" x2="1115.2" y2="937.11"/>
+</g>
+<g id="right-button-up">
+	<ellipse class="st7" cx="1080" cy="938.25" rx="60" ry="22.5"/>
+	<line class="st8" x1="1020" y1="920.57" x2="1020" y2="938.25"/>
+	<line class="st8" x1="1140" y1="921.75" x2="1140" y2="938.5"/>
+	<ellipse class="st5" cx="1080" cy="921.75" rx="60" ry="22.5"/>
+	<line class="st6" x1="1101.06" y1="932.74" x2="1115.33" y2="921.76"/>
+	<line class="st6" x1="1101.06" y1="909.76" x2="1115.2" y2="921.36"/>
+	<line class="st6" x1="1048.67" y1="921.14" x2="1115.2" y2="921.36"/>
+</g>
+<g id="left-button-up">
+	<ellipse class="st7" cx="840" cy="938.25" rx="60" ry="22.5"/>
+	<line class="st8" x1="780" y1="920.57" x2="780" y2="938.25"/>
+	<line class="st8" x1="900" y1="921.75" x2="900" y2="938.5"/>
+	<ellipse class="st5" cx="840" cy="921.75" rx="60" ry="22.5"/>
+	<line class="st6" x1="824.13" y1="909.76" x2="809.87" y2="920.74"/>
+	<line class="st6" x1="824.13" y1="909.76" x2="809.87" y2="920.74"/>
+	<line class="st6" x1="824.13" y1="932.74" x2="809.87" y2="920.74"/>
+	<line class="st6" x1="876.53" y1="921.36" x2="810" y2="921.14"/>
+</g>
+</svg>
+    <div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src='main.js'></script>
+ <script type = "text/javascript" 
+	src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js">
+ </script>
 </body>
 </html>
