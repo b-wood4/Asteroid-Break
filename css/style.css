@@ -6,12 +6,12 @@
 html,
 body {
     height: 100%;
-    
+
 }
 
 body {
-   
-    background-image: url(/images/background.png);
+
+    background-image: url('https://b-wood4.github.io/Asteroid-Break/images/background.png');
     background-size: cover;
 }
 
