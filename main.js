@@ -17,7 +17,7 @@ $(document).ready(function () {
     livesText.style.top = (rightconsole.top + rightconsole.height / 4.5) + 'px'
     livesText.style.left = (rightconsole.left + rightconsole.width / 3.5) + 'px'
 
-    document.getElementById('gameTitle').style.left = '55%'
+    document.getElementById('gameTitle').style.left = '52%'
 
     const paddleHeight = 10
     const paddleWidth = 75

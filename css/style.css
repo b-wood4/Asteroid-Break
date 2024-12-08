@@ -56,9 +56,9 @@ svg {
 }
 
 #gameTitle {
-    font-family: 'handjet', 'sans-serif';
+    font-family: 'Jaro', 'sans-serif';
     font-size: 4vw;
-    color: white;
+    color: #00FFFF;
     position: absolute;
     z-index: 1;
     text-align: center;
